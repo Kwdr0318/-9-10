@@ -1,35 +1,24 @@
-# define PIN_LED 7
-
-unsigned int toggle;
-unsigned int period;
-unsigned int duty_int;
-
-unsigned int duty;
-double cycle;
+#define PIN_LED 7
+int duty = 0;           
+int step = 1;           
+unsigned long period_us = 1000; 
 
 void setup() {
   pinMode(PIN_LED, OUTPUT);
-  toggle = 1;
-  period = 1000;
-  duty = 50;
-  cycle = 500000 / period;
 }
 
 void loop() {
-  toggle = toggle_state(toggle);
-  duty_int = set_duty(duty);
-  digitalWrite(PIN_LED, toggle);
-  delayMicroseconds(double(period/100)*(duty_int));
-  toggle = toggle_state(toggle);
-  digitalWrite(PIN_LED, toggle);
-  delayMicroseconds(double(period/100)*(100-duty_int));
-}
+  duty += step;
+  if (duty <= 0 || duty >= 100) {
+    step = -step;  
+    duty += step;
+  }
 
-int toggle_state(int toggle){
-  return !toggle;
-}
-int set_duty(double duty1){
-  duty = duty1 +(100/cycle);
-  if (duty >= 100 || duty <= 0) cycle = -cycle;
-  return int(duty);
+  unsigned long onTime = period_us * duty / 100;
+  unsigned long offTime = period_us - onTime;
+
+  digitalWrite(PIN_LED, HIGH);
+  delayMicroseconds(onTime);
+  digitalWrite(PIN_LED, LOW);
+  delayMicroseconds(offTime);
 }
