@@ -1,7 +1,7 @@
 #define PIN_LED 7
 int duty = 0;           
 int step = 1;           
-unsigned long period_us = 1000; 
+unsigned long period = 1000; 
 
 void setup() {
   pinMode(PIN_LED, OUTPUT);
@@ -22,3 +22,4 @@ void loop() {
   digitalWrite(PIN_LED, LOW);
   delayMicroseconds(offTime);
 }
+
