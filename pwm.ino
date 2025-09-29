@@ -14,12 +14,13 @@ void loop() {
     duty += step;
   }
 
-  unsigned long onTime = period_us * duty / 100;
-  unsigned long offTime = period_us - onTime;
+  unsigned long onTime = period * duty / 100;
+  unsigned long offTime = period - onTime;
 
   digitalWrite(PIN_LED, HIGH);
   delayMicroseconds(onTime);
   digitalWrite(PIN_LED, LOW);
   delayMicroseconds(offTime);
 }
+
 
